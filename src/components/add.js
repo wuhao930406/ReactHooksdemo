@@ -99,7 +99,7 @@ function Add(props) {
             <div className='action'>
                 <IconButton
                     aria-label="delete"
-                    disabled={!title && !ctx}
+                    disabled={!title || !ctx}
                     onClick={() => { submitForm(item.id) }}>
                     <CheckIcon style={{ color: title && ctx ? "red" : "#999" }} />
                 </IconButton>
