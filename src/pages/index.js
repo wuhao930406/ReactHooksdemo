@@ -5,7 +5,10 @@ import '../App.css';
 import TextField from '@material-ui/core/TextField';
 import Nav from '../components/nav';
 import Add from '../components/add';
-import { MainContext } from '../App'
+import { MainContext } from '../App';
+import { DndProvider, useDrag, useDrop } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
+
 
 function Index(props) {
     const AppContext = useContext(MainContext);
@@ -29,10 +32,10 @@ function Index(props) {
 
     useEffect(() => {
 
-
     });
 
     return (
+      <DndProvider backend={HTML5Backend}>
         <div className="Container">
             <h2>React Hooks实现简单的记事本</h2>
             <TextField className='fullwidth' id="outlined-basic" label="搜索" variant="outlined" onChange={(e) => {
@@ -62,14 +65,15 @@ function Index(props) {
                 {
                     list.filter((item) => { return item.addon || item.title.indexOf(value) !== -1 || item.content.indexOf(value) !== -1 }).map((item, i) => (
                         item.addon ?
-                            <Add key={i} item={item}></Add> :
-                            <Nav key={i} item={item}></Nav>
+                            <Add key={i} item={item} index={i}></Add> :
+                            <Nav key={i} item={item} index={i}></Nav>
                     ))
                 }
             </div>
 
 
         </div>
+      </DndProvider>
     );
 }
 

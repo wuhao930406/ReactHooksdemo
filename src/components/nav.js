@@ -4,12 +4,19 @@ import EditIcon from '@material-ui/icons/Edit';
 import '../App.css';
 import IconButton from '@material-ui/core/IconButton';
 import { MainContext } from '../App';
+import { DndProvider, useDrag, useDrop } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
+
+//互换元素位置
+function swapArr(arr, index1, index2) {
+    arr[index1] = arr.splice(index2, 1, arr[index1])[0];
+    return arr;
+}
 
 function Nav(props) {
-    let { item } = props;
+    let { item, index } = props;
     const AppContext = useContext(MainContext);
     let { state: { list }, dispatch } = AppContext;
-
     function toEdit(id) {
         let newlist = list.map((item, i) => {
             if (item.id === id) {
@@ -26,16 +33,52 @@ function Nav(props) {
             payload: JSON.parse(JSON.stringify(newlist))
         });
     }
-
-    function toDelete(id){
+    function toDelete(id) {
         dispatch({
             type: 'delete',
             payload: id
         });
     }
 
+    //拖拽逻辑
+
+    const type = 'DragableBodyRow';
+    const ref = React.useRef();
+    const [{ isOver, dropClassName }, drop] = useDrop({
+        accept: type,
+        collect: monitor => {
+            const { index: dragIndex } = monitor.getItem() || {};
+            if (dragIndex === index) {
+                return {};
+            }
+            return {
+                isOver: monitor.isOver(),
+                dropClassName: dragIndex < index ? ' drop-over-downward' : ' drop-over-upward',
+            };
+        },
+        drop: item => {
+            //moveRow();
+            console.log(item.index, index)
+            dispatch({
+                type: 'update',
+                payload: swapArr(list,item.index,index)
+            });
+        },
+    });
+    const [, drag] = useDrag({
+        item: { type, index },
+        collect: monitor => ({
+            isDragging: monitor.isDragging(),
+        }),
+    });
+
+    drop(drag(ref));
+
     return (
-        <div className='items'>
+        <div 
+            ref={ref}
+            className={`${'items'} ${isOver ? "moveitems" : ''}`}
+        >
             <div className='item'>
                 <p>{item.title}</p>
                 <p>{item.content}</p>

@@ -22,7 +22,10 @@
   margin: 24px 0px 0px 0px;
   padding: 24px 24px 36px 24px;
   border-bottom: #f0f0f0 dashed 1px;
-
+  background-color: #ffffff;
+}
+.moveitems{
+  background-color: lightblue;
 }
 .action{
   display: flex;
