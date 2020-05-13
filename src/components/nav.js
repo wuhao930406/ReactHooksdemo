@@ -53,7 +53,7 @@ function Nav(props) {
             }
             return {
                 isOver: monitor.isOver(),
-                dropClassName: dragIndex < index ? ' drop-over-downward' : ' drop-over-upward',
+                dropClassName: dragIndex < index ? 'moveitems' : 'moveitemc',
             };
         },
         drop: item => {
@@ -65,7 +65,7 @@ function Nav(props) {
             });
         },
     });
-    const [, drag] = useDrag({
+    const [{isDragging}, drag] = useDrag({
         item: { type, index },
         collect: monitor => ({
             isDragging: monitor.isDragging(),
@@ -77,7 +77,7 @@ function Nav(props) {
     return (
         <div 
             ref={ref}
-            className={`${'items'} ${isOver ? "moveitems" : ''}`}
+            className={ `${isDragging?'itemz':''} ${isOver ? dropClassName : ''} ${'items'} `}
         >
             <div className='item'>
                 <p>{item.title}</p>

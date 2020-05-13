@@ -27,6 +27,18 @@
 .moveitems{
   background-color: lightblue;
 }
+.moveitemc{
+  background-color: lightpink;
+}
+.itemz{
+  overflow: hidden;
+  background-color: lightgray;
+}
+.itemz div{
+  display: none !important;
+}
+
+
 .action{
   display: flex;
   flex-direction: column;

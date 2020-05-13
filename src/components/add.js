@@ -62,7 +62,7 @@ function Add(props) {
             }
             return {
                 isOver: monitor.isOver(),
-                dropClassName: dragIndex < index ? ' drop-over-downward' : ' drop-over-upward',
+                dropClassName: dragIndex < index ? 'moveitems' : 'moveitemc',
             };
         },
         drop: item => {
@@ -74,7 +74,7 @@ function Add(props) {
             });
         },
     });
-    const [, drag] = useDrag({
+    const [{isDragging}, drag] = useDrag({
         item: { type, index },
         collect: monitor => ({
             isDragging: monitor.isDragging(),
@@ -86,7 +86,7 @@ function Add(props) {
     return (
         <div
             ref={ref}
-            className={`${'items'} ${isOver ? "moveitems" : ''}`}
+            className={ `${isDragging?'itemz':''} ${isOver ? dropClassName : ''} ${'items'} `}
         >
             <div className='item' style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexDirection: "column" }}>
                 <TextField value={title} onChange={(e) => {
